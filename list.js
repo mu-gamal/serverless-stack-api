@@ -1,11 +1,11 @@
 import handler from "./libs/handler";
 import dynamoDb from "./libs/dynamodb";
 
-export const main = handler(async () => {
+export const main = handler(async (event) => {
   const params = {
     TableName: process.env.tableName,
     KeyConditionExpression: "userId = :userId",
-    ExpressionAttributeValues: {":userId": "123"},
+    ExpressionAttributeValues: {":userId": event.requestContext.identity.cognitoIdentityId},
   };
 
   const result = await dynamoDb.query(params);
